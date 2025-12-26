@@ -48,8 +48,7 @@ PROVIDERS: Dict[str, ProviderFactory] = {
 def get_provider(name: str) -> ImageProvider:
     """Return a provider instance by registry name."""
 
-    try:
-        factory = PROVIDERS[name]
-    except KeyError as exc:
-        raise KeyError(f"Unknown image provider: {name}") from exc
-    return factory()
+    if name not in PROVIDERS:
+        raise ValueError(f"Unknown image provider: {name}")
+
+    return PROVIDERS[name]()
